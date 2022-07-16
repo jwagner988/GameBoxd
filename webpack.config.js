@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: [
-        './index.js'
+        './client/index.js'
     ],
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -75,11 +75,11 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html',
+            template: path.resolve(__dirname, './client/index.html')
         }),
         new NodePolyfillPlugin()
     ],
     resolve: {
-        extenstions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx'],
     },
 };
