@@ -6,7 +6,12 @@ authController.login = async (req, res, next) => {
     console.log(username, password)
     if (username !== undefined && password !== undefined) {
         res.locals = {
-            hey: 'youre in!'
+            isAuthenticated: true,
+            username: username,
+            id: Math.floor(Math.random() * 100)
+
+            //this needs to be changed obviously
+
         }
     }
     return next()

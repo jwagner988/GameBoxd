@@ -1,3 +1,4 @@
+import { connect } from 'react-redux'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,4 +25,4 @@ return (
 )
 }
 
-export default App
+export default connect(mapStateToProps, null)(App)

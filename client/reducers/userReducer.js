@@ -35,7 +35,14 @@ export const fetchUserLogin = (logInInfo, navigate) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('success', data)
+
+            console.log('data in reducer', data)
+            if(!data.isAuthenticated) {
+                window.alert('user data corrupted, please try again')
+                return
+            }
+            dispatch({type: types.VERIFY_USER, payload: data})
+            navigate('/')
         })
         .catch((err) => {
             console.log('err', err)
