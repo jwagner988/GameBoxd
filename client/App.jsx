@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+
+const mapStateToProps = (state) => ({
+    user: state.user,
+})
+
 const App = (props) => {
     
     const navigate = useNavigate()
 useEffect(() => {
-        console.log('jfwoeijf')
+    if (props.user.isAuthenticated !== true){
         navigate('/login')
+
+    }
     
 }, [])
 
