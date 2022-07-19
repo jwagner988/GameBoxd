@@ -1,9 +1,19 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { fetchUserLogin } from '../reducers/userReducer'
+
+
+
+const mapDispatchToProps = dispatch => ({
+    verifyUser: (logInInfo, navigate) => {
+        const thunkFunc = fetchUserLogin(logInInfo, navigate)
+        dispatch(thunkFunc)
+    }
+})
 
 const LogIn = (props) => {
-
+    const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -16,20 +26,7 @@ const LogIn = (props) => {
             password: password
         }
 
-        fetch('/auth/login', {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json',
-            },
-            body: JSON.stringify(logInInfo)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('success', data)
-        })
-        .catch((err) => {
-            console.log('err', err)
-        })
+        props.verifyUser(logInInfo, navigate)
     }
 
 
@@ -37,12 +34,13 @@ const LogIn = (props) => {
         <div id='logInPage'>
             <input required onChange={(e) => setUsername(e.target.value)}></input>
             <p>Username</p>
-            <input required onChange={(e) => setPassword(e.target.value)}></input>
+            <input required type='password' onChange={(e) => setPassword(e.target.value)}></input>
             <p>Password</p>
 
             <button type='button' onClick={handleClick}>Submit</button>
+            <p>Don't have an account yet? Click <Link to='../signUp'>here</Link> to sign up</p>
         </div>
     )
 }
 
-export default LogIn
+export default connect(null, mapDispatchToProps)(LogIn)
