@@ -15,6 +15,12 @@ const userReducer = (state = initialState, action) => {
                 ...action.payload
             }
         }
+        // case types.SUBMIT_USER: {
+        //     return {
+        //         ...state,
+        //         ...action.payload
+        //     }
+        // }
         default: {
             return state
         }
@@ -49,3 +55,24 @@ export const fetchUserLogin = (logInInfo, navigate) => {
         })
     }
 }
+
+// export const submitUser = (signUpInfo, navigate) => {
+//     return (dispatch) => {
+//         fetch('/auth/signUp', {
+//             method: 'POST',
+//             headers: {
+//                 "Content-Type": 'application/json',
+//             },
+//             body: JSON.stringify(signUpInfo)
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('ret from fetch', data)
+//             dispatch({type: types.SUBMIT_USER, payload:data})
+//             navigate('/')
+//         })
+//         .catch((err) => {
+//             console.log('err', err)
+//         })
+//     }
+// }
