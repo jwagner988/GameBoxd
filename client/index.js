@@ -9,13 +9,13 @@ import {
     Outlet,
   } from 'react-router-dom'
   import LogIn from './components/logIn.jsx'
-  import App from './App.jsx'
   import SignUp from './components/signup.jsx'
+  import App from './App.jsx'
 
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-        <Outlet />
+        {/* <Outlet /> */}
 
             <Routes>
                 <Route path='/' element={<App />}/>
