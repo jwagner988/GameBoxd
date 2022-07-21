@@ -32,3 +32,7 @@ authController.signUp = (req, res, next) => {
 }
 
 module.exports = authController;
+
+
+
+
