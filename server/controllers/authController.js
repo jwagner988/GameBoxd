@@ -52,5 +52,4 @@ authController.signUp = (req, res, next) => {
 module.exports = authController;
 
 
-// postgres://zhvzbmrk:umPs0S7dX5Iqakgm1xz_4R_2SJTcNOXE@heffalump.db.elephantsql.com/zhvzbmrk
 
