@@ -3,20 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import LogIn from './logIn'
 import { connect } from 'react-redux'
 
-// const mapDispatchToProps = dispatch => ({
-//     submitUser: (signUpInfo, navigate) => {
-//         const thunkFunc = fetchUserLogin(signUpInfo, navigate)
-//         dispatch(thunkFunc)
-//     }
-// })
-
 const SignUp = (props) => {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [email, setEmail] = useState('')
-    const [date, setDate] = useState('')
 
     
     const handleClick = (e) => {
@@ -32,7 +24,6 @@ const SignUp = (props) => {
             username: username,
             password: password,
             email: email,
-            date: date
         }
         fetch('/auth/signUp', {
             method: 'POST',
@@ -41,15 +32,11 @@ const SignUp = (props) => {
             },
             body: JSON.stringify(signUpInfo)
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('ret from fetch', data)
-            if (data.success === true){
-                window.alert('Account creation successful, rerouting to log in page')
-                navigate('/')
-            } else {
-                window.alert('Account creation unsuccessful, please try again')
-            }
+        .then(response => {
+            response.json()
+            if (response.status === 200){
+                return window.alert('account creation successful')
+            } else return window.alert('account creation unsuccessful, please try again')
         })
         .catch((err) => {
             console.log('err', err)
@@ -70,9 +57,6 @@ const SignUp = (props) => {
             <p>Email Address</p>
             <input id='signUpEmailInput' onChange={(e) => setEmail(e.target.value)} required></input>
             <br></br>
-            <br></br>
-
-            <input type='date' id='signUpDateInput' onChange={(e) => setDate(e.target.value)} required></input>
             </div>
             <button onClick={handleClick} id='signUpBtn'>Submit</button>
         </div>

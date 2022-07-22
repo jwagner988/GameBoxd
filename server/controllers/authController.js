@@ -1,34 +1,55 @@
+const db = require('../model/DBModel.js')
+const cryptoJS = require('crypto-js')
+const secret = 'secretKeyPog'
+
 const authController = {}
 
 
 authController.login = (req, res, next) => {
     const { username, password } = req.body
-    console.log(username, password)
-    if (username !== undefined && password !== undefined) {
-        res.locals = {
-            isAuthenticated: true,
-            username: username,
-            id: Math.floor(Math.random() * 100)
+    const verifyQuery = `SELECT * FROM users WHERE username='${username}';`
+    db.query(verifyQuery)
+    //     if (err) console.log('error', err)
+    //     // console.log(result.rows[0].username)
+    // })
+        .then(result => {
+            console.log('this should be result', result.rows[0])
+            let bytes = cryptoJS.AES.decrypt(result.rows[0].password, secret)
+            let pass = bytes.toString(cryptoJS.env.Utf8)
+            console.log(pass)
+            if (password === pass){
+                res.locals.valid = true
+                res.locals.username = username
+            }
 
-            //this needs to be changed obviously
-
-        }
-    }
-    return next()
+            return next()
+        })
+        .catch(err => next({
+            log: `authController.login: ERROR: ${typeof err === 'object' ? JSON.stringify(err) : err}`,
+            message: {err: "Error at authController.login Check server logs"}
+        }))
 }
 
 
 authController.signUp = (req, res, next) => {
-    const { username, password, data, email } = req.body
-    console.log(req.body)
-    res.locals = {
-        success: true
+    const { username, password, email } = req.body
+    let cipher = cryptoJS.AES.encrypt(password, secret).toString()
+    const query = `insert into users (username, password, email) values ($1, $2, $3);`
+    const queryObj = {
+        text: query,
+        values: [username, cipher, email]
     }
-    // this is where we would check against the DB
-    let num = Math.floor(Math.random() * 100)
-    if (num < 50) res.locals.success = false
-
-    return next() 
+    db.query(queryObj.text, queryObj.values)
+        .then(result => {
+            return next()
+        })
+        .catch(err => next({
+            log: `authController.signUp: ERROR: ${typeof err === 'object' ? JSON.stringify(err) : err}`,
+            message: {err: 'Error in authController.signUp Check server logs'}
+        }))
 }
 
 module.exports = authController;
+
+
+
