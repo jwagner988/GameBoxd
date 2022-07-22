@@ -3,13 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import LogIn from './logIn'
 import { connect } from 'react-redux'
 
-// const mapDispatchToProps = dispatch => ({
-//     submitUser: (signUpInfo, navigate) => {
-//         const thunkFunc = fetchUserLogin(signUpInfo, navigate)
-//         dispatch(thunkFunc)
-//     }
-// })
-
 const SignUp = (props) => {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
