@@ -9,19 +9,21 @@ authController.login = (req, res, next) => {
     const { username, password } = req.body
     const verifyQuery = `SELECT * FROM users WHERE username='${username}';`
     db.query(verifyQuery)
-    //     if (err) console.log('error', err)
-    //     // console.log(result.rows[0].username)
-    // })
         .then(result => {
             console.log('this should be result', result.rows[0])
-            let bytes = cryptoJS.AES.decrypt(result.rows[0].password, secret)
-            let pass = bytes.toString(cryptoJS.env.Utf8)
-            console.log(pass)
+            const bytes = cryptoJS.AES.decrypt(result.rows[0].password, secret)
+            const pass = bytes.toString(cryptoJS.enc.Utf8)
             if (password === pass){
-                res.locals.valid = true
+                console.log('password good')
+                res.locals.isAuthenticated = true
                 res.locals.username = username
+                res.locals.id = result.rows[0]._id
+                res.cookie('Verification Cookie', 'true', {
+                    maxAge: 86400 * 1000,
+                    httpOnly: true,
+                    secure: true
+                })
             }
-
             return next()
         })
         .catch(err => next({
